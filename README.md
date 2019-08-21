@@ -13,7 +13,7 @@ You can visit [here](http://ec2-35-178-196-68.eu-west-2.compute.amazonaws.com/ca
 
 Public IP Address: 35.178.196.68
 
-username: `grader`
+Username: `grader`
 
 # Create A Server
 
