@@ -51,6 +51,13 @@ sudo apt-get upgrade
 sudo apt-get autoremove
 ```
 
+### Enable Automatic Server Updates
+
+- You can set up unattended-upgrades pretty easily by typing the following commands:
+
+`sudo apt-get install unattended-upgrades`
+`sudo dpkg-reconfigure unattended-upgrades`
+
 ## Step 4: Change the SSH port from 22 to 2200 and disable root login
 
 - Edit the /etc/ssh/sshd_config file with the following command: `sudo nano /etc/ssh/sshd_config`
@@ -260,7 +267,7 @@ pip install psycopg2
 ```
 - Press `CTRL+C` and deactivate the virtual environment with: `deactivate` 
 
-## Set up and enable a virtual host
+## Set up and enable a virtual host and virtual environment
 
 - Add the following line in `/etc/apache2/mods-enabled/wsgi.conf` file to use Python 3:
 ```
@@ -341,6 +348,8 @@ CLIENT_ID = json.loads(open('/var/www/catalogue/catalogue/client_secrets.json', 
 
 1. DigitalOcean [How To Deploy a Flask Application on an Ubuntu VPS](https://www.digitalocean.com/community/tutorials/how-to-deploy-a-flask-application-on-an-ubuntu-vps)
 2. https://www.digitalocean.com/community/tutorials/ssh-essentials-working-with-ssh-servers-clients-and-keys
+3. https://flask.palletsprojects.com/en/1.1.x/deploying/mod_wsgi/
+4. https://modwsgi.readthedocs.io/en/develop/user-guides/virtual-environments.html
 
 ## Github Repos
 
