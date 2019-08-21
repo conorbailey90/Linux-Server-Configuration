@@ -51,10 +51,11 @@ sudo apt-get upgrade
 sudo apt-get autoremove
 ```
 
-## Step 4: Change the SSH port from 22 to 2200
+## Step 4: Change the SSH port from 22 to 2200 and disable root login
 
 - Edit the /etc/ssh/sshd_config file with the following command: `sudo nano /etc/ssh/sshd_config`
 - Change the port number on line 5 from 22 to 2200.
+- Change `PermitRootLogin` from `prohibit-password` to `no`.
 - Save and exit using CTRL+X and confirm changes with Y.
 - Restart SSH: `sudo service ssh restart`.
 
@@ -170,7 +171,7 @@ host    all             all             ::1/128                 md5
 - Create a user called `catalogue` with a password and give them the ability to create databases with the following commands:
 
 ```
-postgres=# CREATE ROLE catalogue WITH LOGIN PASSWORD 'catalog';
+postgres=# CREATE ROLE catalogue WITH LOGIN PASSWORD 'catalogue';
 postgres=# ALTER ROLE catalogue CREATEDB;
 ```
 - List the existing database roles with the following command: `/du`. The output should be as follows:
@@ -178,7 +179,7 @@ postgres=# ALTER ROLE catalogue CREATEDB;
                                    List of roles
  Role name |                         Attributes                         | Member of 
 -----------+------------------------------------------------------------+-----------
- catalogue   | Create DB                                                  | {}
+ catalogue | Create DB                                                  | {}
  postgres  | Superuser, Create role, Create DB, Replication, Bypass RLS | {}
 
  ```
@@ -205,7 +206,7 @@ catalogue ALL=(ALL) ALL
                                   List of databases
    Name    |  Owner   | Encoding |   Collate   |    Ctype    |   Access privileges   
 -----------+----------+----------+-------------+-------------+-----------------------
- catalog   | catalog  | UTF8     | en_US.UTF-8 | en_US.UTF-8 | 
+ catalogue | catalogue| UTF8     | en_US.UTF-8 | en_US.UTF-8 | 
  postgres  | postgres | UTF8     | en_US.UTF-8 | en_US.UTF-8 | 
  template0 | postgres | UTF8     | en_US.UTF-8 | en_US.UTF-8 | =c/postgres          +
            |          |          |             |             | postgres=CTc/postgres
@@ -264,7 +265,7 @@ pip install psycopg2
 - Add the following line in `/etc/apache2/mods-enabled/wsgi.conf` file to use Python 3:
 ```
 #WSGIPythonPath directory|directory-1:directory-2:...
-WSGIPythonPath /var/www/catalog/catalog/venv3/lib/python3.5/site-packages
+WSGIPythonPath /var/www/catalogue/catalogue/venv3/lib/python3.5/site-packages
 ```
 - Save the file and exit.
 - Next, run the command `sudo nano /etc/apache2/sites-available/catalogue.conf` and add the following lines to configure the virtual host:
@@ -290,7 +291,7 @@ WSGIPythonPath /var/www/catalog/catalog/venv3/lib/python3.5/site-packages
 ```
 - Enable virtual host: `sudo a2ensite catalogue.` The following prompt will be returned:
 ```
-Enabling site catalog.
+Enabling site catalogue.
 To activate the new configuration, you need to run:
   service apache2 reload
 ```
@@ -321,7 +322,7 @@ application.secret_key = 'Add your secret key'
 
 ## Update Google Authentication
 
-- Find the hostname of your server using the [hcidata](https://www.hcidata.info/host2ip.cgi). Copy your servers public IP address and click `Find Host Name`. The hostname for my Item Catalog project is `http://ec2-35-178-196-68.eu-west-2.compute.amazonaws.com`.
+- Find the hostname of your server using the [hcidata](https://www.hcidata.info/host2ip.cgi). Copy your servers public IP address and click `Find Host Name`. The hostname for my Item Catalogue project is `http://ec2-35-178-196-68.eu-west-2.compute.amazonaws.com`.
 - Log in to the [Google Developers Console](https://console.developers.google.com/), select `Credentials` from the left menu and open the relevant application which is linked to the `Item Catalogue` application.
 - Add the above hostname (http://ec2-35-178-196-68.eu-west-2.compute.amazonaws.com) and the servers public IP address to the list of Authorised JavaScript origins.
 - Add `http://35.178.196.68.xip.io/gconnect` to the Authorized redirect URIs list. Click `Save`
@@ -339,6 +340,7 @@ CLIENT_ID = json.loads(open('/var/www/catalogue/catalogue/client_secrets.json', 
 ## Websites
 
 1. DigitalOcean [How To Deploy a Flask Application on an Ubuntu VPS](https://www.digitalocean.com/community/tutorials/how-to-deploy-a-flask-application-on-an-ubuntu-vps)
+2. https://www.digitalocean.com/community/tutorials/ssh-essentials-working-with-ssh-servers-clients-and-keys
 
 ## Github Repos
 
